@@ -1,0 +1,12 @@
+/* CSS for Toggler Plugin
+ * Written by Nimrod Tsabari
+ * Since Version 0.1b
+ */
+
+.toggler-hide-ghost { display: none; }
+.toggler-show-ghost { display: block; }
+.toggler-hide-noghost { visibility: hidden; }
+.toggler-show-noghost { visibility: visible; }
+.toggler-block { display: block; }
+.toggler-inline { display: inline-block; }
+.toggler-link { cursor: pointer; }
