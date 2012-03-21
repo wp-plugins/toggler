@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 0.2
+Version: 0.3
 Author: Nimrod Tsabari
 Author URI: http://www.nimrodtsabari.net
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.nimrodtsabari.net
 */?>
 <?php
 
-define('TOGGLER_VER', '0.2');
+define('TOGGLER_VER', '0.3');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -110,14 +110,14 @@ function set_toggler($atts,$content=null) {
 	  }
 	  /* Updating Classes of External Elements */
 	  if ($tag !== '0') {
-		$html .= '<script type="text/javascript">updateExtClasses("' . $tag .'", "' . trim($ext) . '", "' . $default_state . '", "'. trim($link_connect) .'");</script>';
-		$link_connect .= '.'. trim($ext);
+		$html .= '<script type="text/javascript">updateExtClasses("' . $role . '","' . $tag .'", "' . trim($ext) . '", "' . $default_state . '", "'. trim($link_connect) . '");</script>';
+		$ext_class = '.'. trim($ext);
 	  }
 	
 	  $content = str_replace("\r\n", '', $content);
 	
 	  /* Is it a Switch or a Target ?*/	
-	  if ($role == 'switch') $html .= '<div class="toggler-link' . $display . $link_connect . '">' . do_shortcode($content) . '</div>';
+	  if ($role == 'switch') $html .= '<div class="toggler-link' . $display . $link_connect . $ext_class .'">' . do_shortcode($content) . '</div>';
 	  if ($role == 'target') $html .= '<div class="toggler-target' . $display . $link_connect . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
 	  /* Go! */
 	  return $html;

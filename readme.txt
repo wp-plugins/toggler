@@ -4,7 +4,7 @@ Donate Link: http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/
 Tags: toggle, shortcode
 Requires at least: 2.8
 Tested up to: 3.3.1
-Stable tag: 0.2
+Stable tag: 0.3
 
 Powerful tool to toggle anything you want with simple shortcode.
 
@@ -22,11 +22,11 @@ Its a powerful tool for Toggling galore.
 * Inline Toggling
 * Ghost & Non-Ghost Toggling
 * External Toggling
+* External Togglers for Internal sections.
 
 **Coming Soon :**
 
 * Multi Toggling.
-* External Togglers for Internal sections.
 * Hover Toggling.
 * Toggle Effects (Maybe)
 
@@ -50,6 +50,9 @@ You can find detailed information with examples in [Toggler](http://dev.nimrodts
 4. Using Toggler for Inline Toggling.
 
 == Changelog ==
+
+= 0.3 =
+* Added External Togglers for Internal Content.
 
 = 0.2 = 
 * First Stable Release.

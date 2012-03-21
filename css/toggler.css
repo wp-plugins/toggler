@@ -9,4 +9,5 @@
 .toggler-show-noghost { visibility: visible; }
 .toggler-block { display: block; }
 .toggler-inline { display: inline-block; }
-.toggler-link { cursor: pointer; }
+.toggler-link, 
+.toggler-link-ext { cursor: pointer; }
