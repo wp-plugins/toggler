@@ -51,7 +51,13 @@ register_activation_hook(__file__,'omni_toggler_admin_activate');
 add_action('admin_notices', 'omni_toggler_admin_notices');	
 
 function omni_toggler_admin_activate() {
-	add_option('omni_plugin_on_list',0);
+	$reason = get_option('omni_plugin_reason');
+	if ($reason == 'nothanks') { 
+		update_option('omni_plugin_on_list',0);
+	} else {		
+		add_option('omni_plugin_on_list',0);
+		add_option('omni_plugin_reason','');
+	}
 }
 
 function omni_toggler_admin_notices() {
@@ -81,8 +87,13 @@ function omni_toggler_thank_you() {
 
 function omni_toggler_list_status() {
 	$onlist = get_option('omni_plugin_on_list');
+	$reason = get_option('omni_plugin_reason');
 	if ( trim($_GET['onlist']) == 1 || $_GET['no'] == 1 ) {
 		$onlist = 2;
+		if ($_GET['onlist'] == 1) update_option('omni_plugin_reason','onlist');
+		if ($_GET['no'] == 1) {
+			 if ($reason != 'onlist') update_option('omni_plugin_reason','nothanks');
+		}
 		update_option('omni_plugin_on_list', $onlist);
 	} 
 	if ( ((trim($_GET['activate']) != '' && trim($_GET['from']) != '') || trim($_GET['activate_again']) != '') && $onlist != 2 ) { 
