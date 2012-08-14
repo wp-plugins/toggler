@@ -1,10 +1,10 @@
 === Toggler ===
-Contributors: nmrdxt
+Contributors: nmrdxt, omniWP
 Donate Link: http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/
 Tags: toggle, shortcode
 Requires at least: 2.8
-Tested up to: 3.3.1
-Stable tag: 0.3
+Tested up to: 3.4.1
+Stable tag: 0.4
 
 Powerful tool to toggle anything you want with simple shortcode.
 
@@ -23,12 +23,13 @@ Its a powerful tool for Toggling galore.
 * Ghost & Non-Ghost Toggling
 * External Toggling
 * External Togglers for Internal sections.
+* Group Toggling ('Focus').
 
 **Coming Soon :**
 
-* Multi Toggling.
+* TinyMCE Plugin
+* Instant Toggle Generator 
 * Hover Toggling.
-* Toggle Effects (Maybe)
 
 You can find detailed information with examples in [Toggler](http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/ "Toggler's Page").
 
@@ -50,6 +51,10 @@ You can find detailed information with examples in [Toggler](http://dev.nimrodts
 4. Using Toggler for Inline Toggling.
 
 == Changelog ==
+
+= 0.4 = 
+* Added Group Focus Toggling feature.
+* Better hadnling of Wordpress's </p>s.
 
 = 0.3 =
 * Added External Togglers for Internal Content.
