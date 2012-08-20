@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 0.4
+Version: 0.5
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '0.4');
+define('TOGGLER_VER', '0.5');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -233,7 +233,8 @@ function set_toggler($atts,$content=null) {
       'show'		=> 'no',
       'inline'		=> 'no',
       'ghost'		=> 'yes',
-      'group'		=> ''
+      'group'		=> '',
+      'hover'		=> 'no'
     ), $atts));
 
   /* Variables */
@@ -246,7 +247,8 @@ function set_toggler($atts,$content=null) {
   $ghost 		= strtolower($ghost);
   $role			= strtolower($role);
   $group		= trim($group);
-  
+  $hover		= trim($hover);
+    
   if ($group != '') {
   	$group_class = ' toggler-group-' . $group;
 	$group_class .= ' toggler-focus';
@@ -263,6 +265,8 @@ function set_toggler($atts,$content=null) {
 	  }
 	
 	  $display = ($inline == 'yes' ? ' toggler-inline' : ' toggle-block'); 
+	  
+	  $hover = ($hover == 'yes' ? ' toggler-hover' : ' toggler-click');
 	
 	  /* External Links */ 	  
 	  if ($ext != '') {
@@ -300,7 +304,7 @@ function set_toggler($atts,$content=null) {
 	  if (substr($content,0,4) == '</p>') $content = substr($content,5);
 	
 	  /* Is it a Switch or a Target ?*/	
-	  if ($role == 'switch') $html .= '<div class="toggler-link' . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($content) . '</div>';
+	  if ($role == 'switch') $html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($content) . '</div>';
 	  if ($role == 'target') $html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
 	  /* Go! */
 	  return $html;

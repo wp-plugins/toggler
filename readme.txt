@@ -4,7 +4,7 @@ Donate Link: http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/
 Tags: toggle, shortcode
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 0.4
+Stable tag: 0.5
 
 Powerful tool to toggle anything you want with simple shortcode.
 
@@ -24,12 +24,12 @@ Its a powerful tool for Toggling galore.
 * External Toggling
 * External Togglers for Internal sections.
 * Group Toggling ('Focus').
+* Hover Toggling.
 
 **Coming Soon :**
 
 * TinyMCE Plugin
 * Instant Toggle Generator 
-* Hover Toggling.
 
 You can find detailed information with examples in [Toggler](http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/ "Toggler's Page").
 
@@ -51,6 +51,9 @@ You can find detailed information with examples in [Toggler](http://dev.nimrodts
 4. Using Toggler for Inline Toggling.
 
 == Changelog ==
+
+= 0.5 =
+* Added Hover Toggling feature.
 
 = 0.4 = 
 * Added Group Focus Toggling feature.
