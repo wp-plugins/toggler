@@ -14,7 +14,9 @@ With Toggler you can make eny part of your page/post Togglable. You can easily d
 
 You don't need to know any code but a simple [Toggler] shortcode.
 
-Its a powerful tool for Toggling galore. 
+Its a powerful tool for Toggling galore.
+
+**New Feature on version 0.5 -** Hover Toggling! 
 
 **On the current version, you can show :**
  
