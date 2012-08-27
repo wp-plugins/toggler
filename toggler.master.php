@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 0.5
+Version: 1.0
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '0.5');
+define('TOGGLER_VER', '1.0');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -205,8 +205,61 @@ function omni_toggler_do_list_form_2($fname,$uname,$uemail) {
 	<?php
 }
 
+/*  Toggler : Adding a Custom Field to Attachmetns */
+/* ------------------------------------------------ */
 
-/* Toggler : Shortcode adction */
+function toggler_attachment_fields_to_edit($form_fields, $post) {
+	$form_fields["toggler_icon"]["label"] = __("Toggler Icon");
+	$form_fields["toggler_icon"]["input"] = "text";
+	$form_fields["toggler_icon"]["value"] = get_post_meta($post->ID, "_toggler_icon", true);
+  	$form_fields["toggler_icon"]["extra_rows"] = array(  
+      "ppaw_style" => "Give the icon an identifier to use in a Toggler.");
+	return $form_fields;
+}
+
+add_filter("attachment_fields_to_edit", "toggler_attachment_fields_to_edit", null, 2);
+
+function toggler_attachment_fields_to_save($post, $attachment) {  
+  if(isset($attachment['toggler_icon'])){  
+    update_post_meta($post['ID'], '_toggler_icon', $attachment['toggler_icon']);  
+  }  
+  return $post;  
+}  
+
+add_filter('attachment_fields_to_save','toggler_attachment_fields_to_save',null,2);
+
+
+function extract_toggler_icon($icon,$pid) {
+	$args = array(
+       'post_type' => 'attachment',
+       'post_mime_type' => 'image',
+       'numberposts' => -1,
+       'post_status' => null,
+       'post_parent' => $pid
+      );
+  
+    $atts = get_posts($args);
+	
+	$icon_on_src = '';
+	$icon_off_src = '';
+	
+	if ($atts) {
+		foreach ($atts as $att) {
+			$aid = $att->ID;
+	        $agate  = trim(get_post_meta($aid,'_toggler_icon',true));
+
+			$icon_on = $icon . '-show';
+			$icon_off = $icon . '-hide';
+			
+			if ($agate == $icon_on) $icon_on_src = wp_get_attachment_image_src($aid,'full'); 
+			if ($agate == $icon_off) $icon_off_src = wp_get_attachment_image_src($aid,'full');
+		}
+	}
+
+	return array($icon_on_src[0],$icon_off_src[0]); 
+}
+
+//* Toggler : Shortcode adction */
 /* --------------------------- */
 /* @author Nimrod Tsabari
  * @since 0.1b
@@ -234,7 +287,15 @@ function set_toggler($atts,$content=null) {
       'inline'		=> 'no',
       'ghost'		=> 'yes',
       'group'		=> '',
-      'hover'		=> 'no'
+      'hover'		=> 'no',
+      'icon'		=> 'none',
+      'icon_size'	=> '18',
+      'icon_top'	=> '',
+      'icon_left'	=> '5',
+      'icon_color'	=> 'white',
+      'icon_background'	=> 'black',
+      'icon_reset'	=> 'yes',
+      'icon_position'=> 'normal'
     ), $atts));
 
   /* Variables */
@@ -248,15 +309,88 @@ function set_toggler($atts,$content=null) {
   $role			= strtolower($role);
   $group		= trim($group);
   $hover		= trim($hover);
-    
+  $icon 		= trim($icon);
+  $icon_size	= trim($icon_size);
+  $icon_top		= trim($icon_top);
+  $icon_left	= trim($icon_left);
+  $icon_color	= trim($icon_color);
+  $icon_background	= trim($icon_background);
+  $icon_position	= trim($icon_position);
+  $icon_reset	= trim($icon_reset);
+      
   if ($group != '') {
   	$group_class = ' toggler-group-' . $group;
 	$group_class .= ' toggler-focus';
   }
   
   $tag = '0';
+  
+  if ($show == "yes") {
+  	$icon_off_class = 'toggler-icon-show ';
+  	$icon_on_class = 'toggler-icon-hide ';
+  } else {
+  	$icon_off_class = 'toggler-icon-hide ';
+  	$icon_on_class = 'toggler-icon-show ';
+  }
+  
+  $icon_border_radius = intval($icon_size) - 1;
+  $icon_font_size = intval($icon_size) - 2;
+  $icon_right = $icon_left;
+  $icon_left = intval($icon_size) + $icon_left;
+  
+  
+  $plus_styling = '';
+  if ($icon_position == 'float') {
+	  $plus_styling .= 'position: absolute; ';
+	  $plus_styling .= 'margin-left: -' . $icon_left . 'px; ';
+	  $plus_styling .= 'margin-top: ' . $icon_top . 'px; ';
+  } else {
+	  $plus_styling .= 'position: relative; ';
+	  $plus_styling .= 'margin-right: ' . $icon_right . 'px; ';
+	  $plus_styling .= 'top: ' . $icon_top . 'px; ';
+  }
+  $plus_styling .= 'text-align: center; ';
+  $plus_styling .= 'border-radius: ' . $icon_border_radius . 'px; ';
+  $plus_styling .= 'width: ' . intval($icon_size) . 'px; ';
+  $plus_styling .= 'height: ' . intval($icon_size) . 'px; ';
+  $plus_styling .= 'line-height: ' . $icon_font_size . 'px; ';
+  $plus_styling .= 'font-size: ' . $icon_font_size . 'px; ';
+  $plus_styling .= 'background: ' . $icon_background . '; ';
+  $plus_styling .= 'color: ' . $icon_color . '; ';
+  
+  $icon_styling = '';
+  if ($icon_position == 'float') {
+	  $icon_styling .= 'position: absolute; ';
+	  $icon_styling .= 'margin-left: -' . $icon_left . 'px; ';
+	  $icon_styling .= 'margin-top: ' . $icon_top . 'px; ';
+  } else {
+	  $icon_styling .= 'position: relative; ';
+	  $icon_styling .= 'margin-right: ' . $icon_right . 'px; ';
+	  $icon_styling .= 'top: ' . $icon_top . 'px; ';
+  }
+  
+  $icon_img_styling = '';
+  if ($icon_reset == 'yes') 
+	  $icon_img_styling .= 'border: 0; padding: 0; margin: 0; box-shadow: 0; ';
+  $icon_img_styling .= 'width: ' . intval($icon_size) . 'px; ';
+  	
+  
+  
   if ((in_array($role,array('switch','target'))) && ($content != '')) {
-	 	
+   	  $plus_html = '';
+
+	  if ($icon == 'plus') {
+	  	$plus_html = '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $plus_styling . '">+</span><span class="toggler-icon-off ' . $icon_off_class . '" style="' . $plus_styling . '">-</span>';
+	  }
+	  
+	  if (($icon != 'plus') && ($icon != '')) {
+	  	$icons = extract_toggler_icon($icon, get_the_ID());
+		if (($icons[0] != '') && ($icons[1] != '')) {
+		  	$plus_html = '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $icon_styling . '"><img class="toggler-icon-' . $icon . '" src="' . $icons[0] . '" style="' . $icon_img_styling . '" alt="" /></span>';
+		  	$plus_html .= '<span class="toggler-icon-off ' . $icon_off_class . '" style="' . $icon_styling . '"><img class="toggler-icon-' . $icon . '" src="' . $icons[1] . '" style="' . $icon_img_styling . '" alt="" /></span>';
+		}
+	  }
+	  
 	  /* Show / Hide */
 	  if ($show == 'yes') {
 	  	$default_state = ($ghost == 'no' ? 'toggler-show-noghost' : 'toggler-show-ghost');
@@ -304,7 +438,7 @@ function set_toggler($atts,$content=null) {
 	  if (substr($content,0,4) == '</p>') $content = substr($content,5);
 	
 	  /* Is it a Switch or a Target ?*/	
-	  if ($role == 'switch') $html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($content) . '</div>';
+	  if ($role == 'switch') $html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($plus_html . $content) . '</div>';
 	  if ($role == 'target') $html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
 	  /* Go! */
 	  return $html;

@@ -1,12 +1,13 @@
-=== Toggler ===
+=== Toggler. ===
 Contributors: nmrdxt, omniWP
-Donate Link: http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/
-Tags: toggle, shortcode
+Donate Link: http://omniwp.com/plugins/toggler-a-wordpress-plugin/
+Tags: toggle, toggle content, shortcode, reveal content, hide, show 
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 0.5
+Stable tag: 1.0
+License: GPLv2 or later
 
-Powerful tool to toggle anything you want with simple shortcode.
+Powerful tool to toggle anything you want from anywhere you want with simple shortcode.
 
 == Description ==
 
@@ -16,7 +17,7 @@ You don't need to know any code but a simple [Toggler] shortcode.
 
 Its a powerful tool for Toggling galore.
 
-**New Feature on version 0.5 -** Hover Toggling! 
+**New Feature on version 1.0 -** Icons! Include Icons! 
 
 **On the current version, you can show :**
  
@@ -27,13 +28,16 @@ Its a powerful tool for Toggling galore.
 * External Togglers for Internal sections.
 * Group Toggling ('Focus').
 * Hover Toggling.
+* Add icons to your togglers.
+* Quick add +/- to your togglers.
 
 **Coming Soon :**
 
 * TinyMCE Plugin
-* Instant Toggle Generator 
+* Instant Toggle Generator
+* Text Switch when Toggling. 
 
-You can find detailed information with examples in [Toggler](http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/ "Toggler's Page").
+You can find detailed information with examples in [Toggler](http://omniwp.com/plugins/toggler-a-wordpress-plugin/ "Toggler's Page").
 
 == Installation ==
 
@@ -43,7 +47,7 @@ You can find detailed information with examples in [Toggler](http://dev.nimrodts
 
 == Frequently Asked Questions ==
  
-You can find detailed information with examples in [Toggler](http://dev.nimrodtsabari.net/wp/toggler-a-wordpress-plugin/ "Toggler's Page").
+You can find detailed information with examples in [Toggler](http://omniwp.com/plugins/toggler-a-wordpress-plugin/ "Toggler's Page").
 
 == Screenshots ==
 
@@ -51,8 +55,13 @@ You can find detailed information with examples in [Toggler](http://dev.nimrodts
 2. Using Toggler to Toggle External Sections (after).
 3. Using Toggler for Non-Ghost Toggling.
 4. Using Toggler for Inline Toggling.
+5. Some Icons.
 
 == Changelog ==
+
+= 1.0 =
+* Icon Suuport.
+* +/- Quick support.
 
 = 0.5 =
 * Added Hover Toggling feature.
