@@ -1,10 +1,10 @@
-=== Toggler. ===
+=== Toggler. The Ultimate Toggling Machine. ===
 Contributors: nmrdxt, omniWP
 Donate Link: http://omniwp.com/plugins/toggler-a-wordpress-plugin/
 Tags: toggle, toggle content, shortcode, reveal content, hide, show 
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 
 Powerful tool to toggle anything you want from anywhere you want with simple shortcode.
@@ -17,7 +17,7 @@ You don't need to know any code but a simple [Toggler] shortcode.
 
 Its a powerful tool for Toggling galore.
 
-**New Feature on version 1.0 -** Icons! Include Icons! 
+**New Feature on version 1.1 -** Toggle content within a toggler! 
 
 **On the current version, you can show :**
  
@@ -30,12 +30,12 @@ Its a powerful tool for Toggling galore.
 * Hover Toggling.
 * Add icons to your togglers.
 * Quick add +/- to your togglers.
+* Switch Text within a toggler. 
 
 **Coming Soon :**
 
 * TinyMCE Plugin
 * Instant Toggle Generator
-* Text Switch when Toggling. 
 
 You can find detailed information with examples in [Toggler](http://omniwp.com/plugins/toggler-a-wordpress-plugin/ "Toggler's Page").
 
@@ -58,6 +58,9 @@ You can find detailed information with examples in [Toggler](http://omniwp.com/p
 5. Some Icons.
 
 == Changelog ==
+
+= 1.1 =
+* Text switch within a toggler.
 
 = 1.0 =
 * Icon Suuport.

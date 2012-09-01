@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 1.0
+Version: 1.1
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '1.0');
+define('TOGGLER_VER', '1.1');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -295,7 +295,9 @@ function set_toggler($atts,$content=null) {
       'icon_color'	=> 'white',
       'icon_background'	=> 'black',
       'icon_reset'	=> 'yes',
-      'icon_position'=> 'normal'
+      'icon_position'=> 'normal',
+      'text_show'	=> '',
+      'text_hide'	=> ''
     ), $atts));
 
   /* Variables */
@@ -317,6 +319,12 @@ function set_toggler($atts,$content=null) {
   $icon_background	= trim($icon_background);
   $icon_position	= trim($icon_position);
   $icon_reset	= trim($icon_reset);
+  $text_show	= trim($text_show);
+  $text_hide	= trim($text_hide);
+  $show_text_replace = FALSE;
+  
+  
+  if (($text_show !== '') || ($text_hide !== '')) $show_text_replace = TRUE; 
       
   if ($group != '') {
   	$group_class = ' toggler-group-' . $group;
@@ -374,6 +382,12 @@ function set_toggler($atts,$content=null) {
 	  $icon_img_styling .= 'border: 0; padding: 0; margin: 0; box-shadow: 0; ';
   $icon_img_styling .= 'width: ' . intval($icon_size) . 'px; ';
   	
+  $text_replace = '';
+  if ($show_text_replace) {
+  	$text_replace .= '<span class="toggler-replace-show ' . $icon_on_class . '">' . $text_show . '</span>';
+  	$text_replace .= '<span class="toggler-replace-hide ' . $icon_off_class . '">' . $text_hide . '</span>';
+	if ($role == 'switch') $content = str_replace('@replace', $text_replace, $content);
+  }
   
   
   if ((in_array($role,array('switch','target'))) && ($content != '')) {
