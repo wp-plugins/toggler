@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Add a Toggler Box</title>
+	<script type="text/javascript" src="js/tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/dialog.js"></script>
+	<script type="text/javscript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<style type="text/css">
+	p { 
+		margin: 5px; 
+		padding: 5px;
+		border-bottom: 1px dashed #bbb;
+	}
+	p.title {
+		font-size: 18px;
+		border-bottom: 0px;
+		color: black;
+	}
+	p.title span {
+		font-size: 12px;
+		color: #07273E;
+	}
+	p.title a {
+		text-decoration: none;
+		border-bottom: 1px dashed #07273E;
+		font-size: 12px;
+		color: #07273E;
+	}
+	p.title a:hover {
+		border-bottom: 0px;
+	}
+	p.subtitle {
+		font-size: 14px;
+		background: white;
+		padding: 5px;
+		font-weight: bold;
+		margin: 10px 0;
+		border-bottom: 3px solid #f0f0f0;
+	}
+	p span.label {
+		width: 120px;
+		display: inline-block;
+	}
+	span.desc {
+		font-size: 11px;
+		padding: 5px 0;
+		color: #777;
+	}
+	input.toggler-but {
+		margin: 10px !important;
+		padding: 10px !important;
+		width: 150px !important;
+		height: auto !important;
+	}
+	.mceActionPanel {
+		text-align: center;
+	}
+	.block { display: block; }
+	.inline { display: inline-block; }
+	.toggler-admin-hidden { display: none; }
+	.toggler-admin-show { display: block; }
+</style>
+</head>
+<body>
+<form onsubmit="TogglerDialog.insert();return false;" action="#">
+	<p class="title">Insert a Toggler</p>
+	<p>Toggler Connector 
+		<input id="connector" name="connector" type="text" class="text" size="30" />
+		<span class="desc block">Divide into columns and decide how many to use.</span>	
+	</p>
+	<p>Inline 
+		<select id="inline" name="inline">
+			<option value="no">No</option>
+			<option value="yes">Yes</option>
+		</select>
+	<span class="desc inline"> | Keep Toggler In the same line ?</span>
+	</p>
+	<p>Ghost 
+		<select id="ghost" name="ghost">
+			<option value="no">No</option>
+			<option value="yes" selected="selected">Yes</option>
+		</select>
+	<span class="desc inline"> | Ghost Toggler ?</span>
+	</p>
+	<p>Hover 
+		<select id="hover" name="hover">
+			<option value="no" selected="selected">No</option>
+			<option value="yes">Yes</option>
+		</select>
+	<span class="desc inline"> | Hover Toggling ?</span>
+	</p>
+	<p>Group Connector 
+		<input id="group" name="group" type="text" class="text" size="30" />
+		<span class="desc block">Part of a group? Connect its members with this Connector.</span>	
+	</p>
+	<p class="subtitle">Toggle Switch Text :</p>
+	<p>Text When Collapsed
+		<input id="text_show" name="text_show" size="30" type="text" class="text" />
+	</p>
+	<p>Text When Expanded
+		<input id="text_hide" name="text_hide" size="30" type="text" class="text" />
+	</p>
+	<span class="desc block">Don't forget to add @replace in the Switch.</span>	
+	<p class="subtitle">Icon</p>
+	<p>Add an Icon ?
+		<select id="icon" name="icon" onchange="switchSelect(this.value)">
+			<option value="none" selected="selected">No</option>
+			<option value="plus">Plus Icon</option>
+			<option value="img">Image Icon</option>
+		</select>
+	</p>
+	<div id="toggler-plus-icon" class="toggler-admin-hidden">
+		<p><span class="label">Icon size</span>
+			<input id="icon_size" name="icon_size" value="" type="text" class="text" />
+			<span class="desc inline">(in pixels)</span>
+		</p>
+		<p><span class="label">Icon background</span>
+			<input id="icon_background" name="icon_background" value="" type="text" class="text" />
+			<span class="desc inline">(a color, hex, rgba)</span>
+		</p>
+		<p><span class="label">Icon color</span>
+			<input id="icon_color" name="icon_color" value="" type="text" class="text" />
+			<span class="desc inline">(a color, hex, rgba)</span>
+		</p>
+	</div>
+	<div id="toggler-img-icon" class="toggler-admin-hidden">
+		<p><span class="label">Icon name</span>
+			<input id="icon_name" name="icon_name" value="" type="text" class="text" size="30" />
+		</p>
+		<p>Reset img Styling ?
+			<select id="icon_reset" name="icon_reset">
+				<option value="no">No</option>
+				<option value="yes" selected="selected">Yes</option>
+			</select>
+			<span class="desc block">Reset Theme's default img styling.</span>
+		</p>
+	</div>
+	<div id="toggler-icon" class="toggler-admin-hidden">
+		<p><span class="label">Icon top</span>
+			<input id="icon_top" name="icon_top" value="" type="text" class="text" />
+			<span class="desc inline">(in pixels)</span>
+		</p>
+		<p><span class="label">Icon left</span>
+			<input id="icon_left" name="icon_left" value="" type="text" class="text" />
+			<span class="desc inline">(in pixels)</span>
+		</p>
+		<p><span class="label">Icon Float ?</span>
+			<select id="icon_position" name="icon_position">
+				<option value="normal" selected="selected">No</option>
+				<option value="float">Yes</option>
+			</select>
+		</p>
+	</div>
+	<div class="mceActionPanel">
+		<input class="toggler-but" type="button" id="insert" name="insert" value="Insert Shortcode" onclick="TogglerDialog.insert();" />
+		<input class="toggler-but" type="button" id="cancel" name="cancel" value="Cancel" onclick="tinyMCEPopup.close();" />
+	</div>
+</form>
+<script type="text/javascript">
+	function d(id) { return document.getElementById(id); }
+
+	function switchSelect(val) {
+			if (val == 'none') {
+				h = d('toggler-icon');
+				h.className = 'toggler-admin-hidden';
+				h = d('toggler-plus-icon');
+				h.className = 'toggler-admin-hidden';
+				h = d('toggler-img-icon');
+				h.className = 'toggler-admin-hidden';
+			}
+			if (val == 'plus') {
+				s = d('toggler-icon');
+				s.className = 'toggler-admin-show';
+				s = d('toggler-plus-icon');
+				s.className = 'toggler-admin-show';
+				h = d('toggler-img-icon');
+				h.className = 'toggler-admin-hidden';
+			}
+			if (val == 'img') {
+				s = d('toggler-icon');
+				s.className = 'toggler-admin-show';
+				h = d('toggler-plus-icon');
+				h.className = 'toggler-admin-hidden';
+				s = d('toggler-img-icon');
+				s.className = 'toggler-admin-show';
+			}
+		}
+</script>
+</body>
+</html>

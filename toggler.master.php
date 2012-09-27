@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 1.1
+Version: 2.0
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '1.1');
+define('TOGGLER_VER', '2.0');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -259,6 +259,28 @@ function extract_toggler_icon($icon,$pid) {
 	return array($icon_on_src[0],$icon_off_src[0]); 
 }
 
+/* Adding TinyMCE Button */
+/* --------------------- */
+
+add_filter('mce_external_plugins', "toggler_register");
+add_filter('mce_buttons', 'toggler_add_button', 0);
+function toggler_add_button($buttons){
+	array_push($buttons, "|", "togglerplugin");
+	return $buttons;
+}
+function toggler_register($plugin_array){
+	$url = TOGGLER_DIR . "btn/toggler.button.js";
+	$plugin_array['togglerplugin'] = $url;
+	return $plugin_array;
+}
+function toggler_refresh_mce($ver) {
+  $ver += 3;
+  return $ver;
+}
+
+add_filter( 'tiny_mce_version', 'toggler_refresh_mce');
+
+
 //* Toggler : Shortcode adction */
 /* --------------------------- */
 /* @author Nimrod Tsabari
@@ -275,8 +297,10 @@ function extract_toggler_icon($icon,$pid) {
  * 	"show = yes / no"				- the default state of the target, shown or hidden.
  *  "inline = yes / no"				- whether you want the target to be inline with whats around it
  *  "ghost = yes / no"				- ghost toggling or non-ghost toggling.
- * 	"group = text"				- whether to group elements and what name to give that group
- * 
+ * 	"group = text"					- whether to group elements and what name to give that group
+ *  "hover = yes / no"				- make it a hover toggle or not.
+ *  "icon_* = *"					- handle icons / plus/minus.
+ *  "text_show / text_hide = <some text>"	- text switch in switches.
  */
 function set_toggler($atts,$content=null) {
   extract(shortcode_atts(array(
@@ -297,7 +321,8 @@ function set_toggler($atts,$content=null) {
       'icon_reset'	=> 'yes',
       'icon_position'=> 'normal',
       'text_show'	=> '',
-      'text_hide'	=> ''
+      'text_hide'	=> '',
+      'title'		=> ''
     ), $atts));
 
   /* Variables */
@@ -321,9 +346,11 @@ function set_toggler($atts,$content=null) {
   $icon_reset	= trim($icon_reset);
   $text_show	= trim($text_show);
   $text_hide	= trim($text_hide);
+  $title		= trim($title);
+
+
+  // show text switch in switches
   $show_text_replace = FALSE;
-  
-  
   if (($text_show !== '') || ($text_hide !== '')) $show_text_replace = TRUE; 
       
   if ($group != '') {
@@ -332,7 +359,8 @@ function set_toggler($atts,$content=null) {
   }
   
   $tag = '0';
-  
+
+  // initializing icon
   if ($show == "yes") {
   	$icon_off_class = 'toggler-icon-show ';
   	$icon_on_class = 'toggler-icon-hide ';
@@ -340,13 +368,13 @@ function set_toggler($atts,$content=null) {
   	$icon_off_class = 'toggler-icon-hide ';
   	$icon_on_class = 'toggler-icon-show ';
   }
-  
+  // relative styling/positioning
   $icon_border_radius = intval($icon_size) - 1;
   $icon_font_size = intval($icon_size) - 2;
   $icon_right = $icon_left;
   $icon_left = intval($icon_size) + $icon_left;
   
-  
+  // plus/minus icon styling
   $plus_styling = '';
   if ($icon_position == 'float') {
 	  $plus_styling .= 'position: absolute; ';
@@ -365,7 +393,7 @@ function set_toggler($atts,$content=null) {
   $plus_styling .= 'font-size: ' . $icon_font_size . 'px; ';
   $plus_styling .= 'background: ' . $icon_background . '; ';
   $plus_styling .= 'color: ' . $icon_color . '; ';
-  
+  // icon styling
   $icon_styling = '';
   if ($icon_position == 'float') {
 	  $icon_styling .= 'position: absolute; ';
@@ -376,32 +404,47 @@ function set_toggler($atts,$content=null) {
 	  $icon_styling .= 'margin-right: ' . $icon_right . 'px; ';
 	  $icon_styling .= 'top: ' . $icon_top . 'px; ';
   }
-  
+  // Reseting styling incase of default post img theme styling
   $icon_img_styling = '';
   if ($icon_reset == 'yes') 
 	  $icon_img_styling .= 'border: 0; padding: 0; margin: 0; box-shadow: 0; ';
   $icon_img_styling .= 'width: ' . intval($icon_size) . 'px; ';
-  	
+  // Text Switch in Switches
   $text_replace = '';
   if ($show_text_replace) {
   	$text_replace .= '<span class="toggler-replace-show ' . $icon_on_class . '">' . $text_show . '</span>';
   	$text_replace .= '<span class="toggler-replace-hide ' . $icon_off_class . '">' . $text_hide . '</span>';
 	if ($role == 'switch') $content = str_replace('@replace', $text_replace, $content);
+	if ($role == 'quick') $title = str_replace('@replace', $text_replace, $title);
+  }
+
+  $quick_styling = $title;
+  if (($role == "quick") && (strpos($content,'@<') !== false)) {
+  	$end_styling = strpos($content,'>@');
+	$quick_styling = substr($content,1,$end_styling);
+	$quick_styling = str_replace('styling',$title,$quick_styling);
+	$content = substr($content,$end_styling+2);
   }
   
   
-  if ((in_array($role,array('switch','target'))) && ($content != '')) {
+  if ((in_array($role,array('switch','target','quick'))) && ($content != '')) {
    	  $plus_html = '';
 
+	  // icon / plus action
+	  $plus_html = '';
 	  if ($icon == 'plus') {
-	  	$plus_html = '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $plus_styling . '">+</span><span class="toggler-icon-off ' . $icon_off_class . '" style="' . $plus_styling . '">-</span>';
+	  	$plus_html .= '<script type="text/javascript">';
+	  	$plus_html .= 'document.write("<span class=\"toggler-icon-on ' . $icon_on_class . '\" style=\"' . $plus_styling . '\">+</span><span class=\"toggler-icon-off ' . $icon_off_class . '\" style=\"' . $plus_styling . '\">-</span>");';
+	  	$plus_html .= '</script>';		
+	  	//$plus_html = '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $plus_styling . '">+</span><span class="toggler-icon-off ' . $icon_off_class . '" style="' . $plus_styling . '">-</span>';
 	  }
-	  
 	  if (($icon != 'plus') && ($icon != '')) {
 	  	$icons = extract_toggler_icon($icon, get_the_ID());
 		if (($icons[0] != '') && ($icons[1] != '')) {
-		  	$plus_html = '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $icon_styling . '"><img class="toggler-icon-' . $icon . '" src="' . $icons[0] . '" style="' . $icon_img_styling . '" alt="" /></span>';
-		  	$plus_html .= '<span class="toggler-icon-off ' . $icon_off_class . '" style="' . $icon_styling . '"><img class="toggler-icon-' . $icon . '" src="' . $icons[1] . '" style="' . $icon_img_styling . '" alt="" /></span>';
+		  	$plus_html .= '<script type="text/javascript">';
+		  	$plus_html .= 'document.write("<span class=\"toggler-icon-on ' . $icon_on_class . '\" style=\"' . $icon_styling . '\"><img class=\"toggler-icon-' . $icon . '\" src=\"' . $icons[0] . '\" style=\"' . $icon_img_styling . '\" alt=\"\" /></span>");';
+		  	$plus_html .= 'document.write("<span class=\"toggler-icon-off ' . $icon_off_class . '\" style=\"' . $icon_styling . '\"><img class=\"toggler-icon-' . $icon . '\" src=\"' . $icons[1] . '\" style=\"' . $icon_img_styling . '\" alt=\"\" /></span>");';
+		  	$plus_html .= '</script>';		
 		}
 	  }
 	  
@@ -411,9 +454,11 @@ function set_toggler($atts,$content=null) {
 	  } else {
 	  	$default_state = ($ghost == 'no' ? 'toggler-hide-noghost' : 'toggler-hide-ghost');
 	  }
-	
-	  $display = ($inline == 'yes' ? ' toggler-inline' : ' toggle-block'); 
 	  
+	  // inline action
+	  $display = ($inline == 'yes' ? ' toggler-inline' : ' toggle-block'); 
+		
+	  // hover action
 	  $hover = ($hover == 'yes' ? ' toggler-hover' : ' toggler-click');
 	
 	  /* External Links */ 	  
@@ -452,10 +497,37 @@ function set_toggler($atts,$content=null) {
 	  if (substr($content,0,4) == '</p>') $content = substr($content,5);
 	
 	  /* Is it a Switch or a Target ?*/	
-	  if ($role == 'switch') $html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($plus_html . $content) . '</div>';
-	  if ($role == 'target') $html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
+	  if ($role == 'switch') {
+	   	 //no-js fallback
+	  	 $html .= '<script type="text/javascript">';
+	  	 $html .= 'document.write("<div class=\"toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '\">");';
+	  	 $html .= '</script>';
+	  	 $html .= do_shortcode($plus_html . $content);
+	  	 $html .= '<script type="text/javascript">document.write("</div>");</script>';
+	  	 //$html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($plus_html . $content) . '</div>';
+	  }
+	  if ($role == 'target') {
+	   	 //no-js fallback
+	  	 $html .= '<script type="text/javascript">';
+	  	 $html .= 'document.write("<div class=\"toggler-target' . $display . $link_connect . $group_class . '\"><div class=\"'. $default_state .'\">");';
+	  	 $html .= '</script>';
+	  	 $html .= do_shortcode($content);
+	  	 $html .= '<script type="text/javascript">document.write("</div></div>");</script>';
+	  	 //$html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
+	  }
+	  if ($role == 'quick') {
+	  	 //no-js fallback
+		 $html = '<script type="text/javascript">';
+	  	 $html .= 'document.write("<div class=\"toggler-link toggler-quick' . $hover . $display . $group_class . '\">");</script>';
+	  	 $html .= $plus_html . $quick_styling;
+	  	 $html .= '<script type="text/javascript">document.write("</div>");';
+	  	 $html .= 'document.write("<div class=\"toggler-target' . $display  . $group_class . '\"><div class=\"'. $default_state .'\">");';
+	  	 $html .= '</script>';
+	  	 $html .= do_shortcode($content);
+	  	 $html .= '<script type="text/javascript">document.write("</div></div>");</script>';
+	  }
 	  /* Go! */
-	  return $html;
+  	  return $html;
   } 
 }
 
