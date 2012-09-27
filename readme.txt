@@ -4,7 +4,7 @@ Donate Link: http://omniwp.com/plugins/toggler-a-wordpress-plugin/
 Tags: toggle, toggle content, shortcode, reveal content, hide, show 
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv2 or later
 
 Powerful tool to toggle anything you want from anywhere you want with simple shortcode.
@@ -31,7 +31,6 @@ Its a powerful tool for Toggling galore.
 * Add icons to your togglers.
 * Quick add +/- to your togglers.
 * Switch Text within a toggler. 
-* No Javascript fallback.
 * TinyMCE Plugin.
 * Quick Togglers.
 
@@ -61,6 +60,9 @@ You can find detailed information with examples in [Toggler](http://omniwp.com/p
 5. Some Icons.
 
 == Changelog ==
+
+= 2.1 =
+* removed no-js fallback due to incompatibilty with too many themes...
 
 = 2.0 =
 * added Quick Togglers.

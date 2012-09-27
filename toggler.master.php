@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 2.0
+Version: 2.1
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '2.0');
+define('TOGGLER_VER', '2.1');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -433,18 +433,13 @@ function set_toggler($atts,$content=null) {
 	  // icon / plus action
 	  $plus_html = '';
 	  if ($icon == 'plus') {
-	  	$plus_html .= '<script type="text/javascript">';
-	  	$plus_html .= 'document.write("<span class=\"toggler-icon-on ' . $icon_on_class . '\" style=\"' . $plus_styling . '\">+</span><span class=\"toggler-icon-off ' . $icon_off_class . '\" style=\"' . $plus_styling . '\">-</span>");';
-	  	$plus_html .= '</script>';		
-	  	//$plus_html = '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $plus_styling . '">+</span><span class="toggler-icon-off ' . $icon_off_class . '" style="' . $plus_styling . '">-</span>';
+	  	$plus_html .= '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $plus_styling . '">+</span><span class="toggler-icon-off ' . $icon_off_class . '" style="' . $plus_styling . '">-</span>';
 	  }
 	  if (($icon != 'plus') && ($icon != '')) {
 	  	$icons = extract_toggler_icon($icon, get_the_ID());
 		if (($icons[0] != '') && ($icons[1] != '')) {
-		  	$plus_html .= '<script type="text/javascript">';
-		  	$plus_html .= 'document.write("<span class=\"toggler-icon-on ' . $icon_on_class . '\" style=\"' . $icon_styling . '\"><img class=\"toggler-icon-' . $icon . '\" src=\"' . $icons[0] . '\" style=\"' . $icon_img_styling . '\" alt=\"\" /></span>");';
-		  	$plus_html .= 'document.write("<span class=\"toggler-icon-off ' . $icon_off_class . '\" style=\"' . $icon_styling . '\"><img class=\"toggler-icon-' . $icon . '\" src=\"' . $icons[1] . '\" style=\"' . $icon_img_styling . '\" alt=\"\" /></span>");';
-		  	$plus_html .= '</script>';		
+		  	$plus_html .= '<span class="toggler-icon-on ' . $icon_on_class . '" style="' . $icon_styling . '"><img class="toggler-icon-' . $icon . '" src="' . $icons[0] . '" style="' . $icon_img_styling . '" alt="" /></span>';
+		  	$plus_html .= '<span class="toggler-icon-off ' . $icon_off_class . '" style="' . $icon_styling . '"><img class="toggler-icon-' . $icon . '" src="' . $icons[1] . '" style="' . $icon_img_styling . '" alt="" /></span>';
 		}
 	  }
 	  
@@ -498,33 +493,18 @@ function set_toggler($atts,$content=null) {
 	
 	  /* Is it a Switch or a Target ?*/	
 	  if ($role == 'switch') {
-	   	 //no-js fallback
-	  	 $html .= '<script type="text/javascript">';
-	  	 $html .= 'document.write("<div class=\"toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '\">");';
-	  	 $html .= '</script>';
-	  	 $html .= do_shortcode($plus_html . $content);
-	  	 $html .= '<script type="text/javascript">document.write("</div>");</script>';
-	  	 //$html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($plus_html . $content) . '</div>';
+	  	 $html .= '<div class="toggler-link' . $hover . $display . $link_connect . $ext_class . $group_class . '">' . do_shortcode($plus_html . $content) . '</div>';
 	  }
 	  if ($role == 'target') {
-	   	 //no-js fallback
-	  	 $html .= '<script type="text/javascript">';
-	  	 $html .= 'document.write("<div class=\"toggler-target' . $display . $link_connect . $group_class . '\"><div class=\"'. $default_state .'\">");';
-	  	 $html .= '</script>';
-	  	 $html .= do_shortcode($content);
-	  	 $html .= '<script type="text/javascript">document.write("</div></div>");</script>';
-	  	 //$html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
+	  	 $html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
 	  }
 	  if ($role == 'quick') {
-	  	 //no-js fallback
-		 $html = '<script type="text/javascript">';
-	  	 $html .= 'document.write("<div class=\"toggler-link toggler-quick' . $hover . $display . $group_class . '\">");</script>';
+	  	 $html .= '<div class="toggler-link toggler-quick' . $hover . $display . $group_class . '">';
 	  	 $html .= $plus_html . $quick_styling;
-	  	 $html .= '<script type="text/javascript">document.write("</div>");';
-	  	 $html .= 'document.write("<div class=\"toggler-target' . $display  . $group_class . '\"><div class=\"'. $default_state .'\">");';
-	  	 $html .= '</script>';
+	  	 $html .= '</div>';
+	  	 $html .= '<div class="toggler-target' . $display  . $group_class . '"><div class="'. $default_state .'">';
 	  	 $html .= do_shortcode($content);
-	  	 $html .= '<script type="text/javascript">document.write("</div></div>");</script>';
+	  	 $html .= '</div></div>';
 	  }
 	  /* Go! */
   	  return $html;
