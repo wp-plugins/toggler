@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 2.1
+Version: 2.3
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '2.1');
+define('TOGGLER_VER', '2.3');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */
@@ -163,11 +163,11 @@ function omni_toggler_registration_form($fname,$uname,$uemail,$btn='Register',$h
 	</script>
 	<?php } ?>
 	<form name="<?php echo $fname;?>" method="post" action="http://www.aweber.com/scripts/addlead.pl" <?php if($activate_again!=1){;?>onsubmit="return imo_validate_form();"<?php }?> style="text-align:center;" >
-		<input type="hidden" name="meta_web_form_id" value="81071885" />
-		<input type="hidden" name="listname" value="toggler" />  
+		<input type="hidden" name="meta_web_form_id" value="1222167085" />
+		<input type="hidden" name="listname" value="omniwp_plugins" />  
 		<input type="hidden" name="redirect" value="<?php echo $thankyou_url;?>">
 		<input type="hidden" name="meta_redirect_onlist" value="<?php echo $onlist_url;?>">
-		<input type="hidden" name="meta_adtracking" value="toggler_register" />
+		<input type="hidden" name="meta_adtracking" value="omniwp_plugins_adtracking" />
 		<input type="hidden" name="meta_message" value="1">
 		<input type="hidden" name="meta_required" value="from,name">
 		<input type="hidden" name="meta_forward_vars" value="1">	
@@ -312,7 +312,7 @@ function set_toggler($atts,$content=null) {
       'ghost'		=> 'yes',
       'group'		=> '',
       'hover'		=> 'no',
-      'icon'		=> 'none',
+      'icon'		=> '',
       'icon_size'	=> '18',
       'icon_top'	=> '',
       'icon_left'	=> '5',
@@ -322,7 +322,8 @@ function set_toggler($atts,$content=null) {
       'icon_position'=> 'normal',
       'text_show'	=> '',
       'text_hide'	=> '',
-      'title'		=> ''
+      'title'		=> '',
+      'theme'		=> ''
     ), $atts));
 
   /* Variables */
@@ -347,8 +348,30 @@ function set_toggler($atts,$content=null) {
   $text_show	= trim($text_show);
   $text_hide	= trim($text_hide);
   $title		= trim($title);
+  $theme		= strtolower(trim($theme));
 
+  $themes = array('boxed-white','boxed-black','boxed-gray','columns-dark','columns-light');
 
+  if (in_array($theme,$themes)) {
+  	$role = 'quick';
+  }
+
+  if (($theme == 'boxed-black') && ($icon == '')) {
+  	$icon = 'plus';
+	$icon_background = '#444';
+	$icon_color = '#AAA';
+  }
+  if (($theme == 'boxed-white') && ($icon == '')) {
+  	$icon = 'plus';
+	$icon_background = '#AAA';
+	$icon_color = '#444';
+  }
+  if (($theme == 'boxed-gray') && ($icon == '')) {
+  	$icon = 'plus';
+	$icon_background = '#222';
+	$icon_color = '#aaa';
+  }
+  
   // show text switch in switches
   $show_text_replace = FALSE;
   if (($text_show !== '') || ($text_hide !== '')) $show_text_replace = TRUE; 
@@ -499,12 +522,18 @@ function set_toggler($atts,$content=null) {
 	  	 $html .= '<div class="toggler-target' . $display . $link_connect . $group_class . '"><div class="'. $default_state .'">' . do_shortcode($content) . '</div></div>';
 	  }
 	  if ($role == 'quick') {
+	  	 if (in_array($theme,$themes)) {
+		  	 $html .= '<div class="toggler-theme-' . $theme . '">';
+	  	 }
 	  	 $html .= '<div class="toggler-link toggler-quick' . $hover . $display . $group_class . '">';
 	  	 $html .= $plus_html . $quick_styling;
 	  	 $html .= '</div>';
 	  	 $html .= '<div class="toggler-target' . $display  . $group_class . '"><div class="'. $default_state .'">';
 	  	 $html .= do_shortcode($content);
 	  	 $html .= '</div></div>';
+	  	 if (in_array($theme,$themes)) {
+		 	$html .= '</div>';
+	     }
 	  }
 	  /* Go! */
   	  return $html;

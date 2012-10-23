@@ -1,7 +1,7 @@
 /* CSS for Toggler Plugin
  * Written by Nimrod Tsabari
  * Since Version 0.1b
- * Relase Version 1.2
+ * Relase Version 2.3
  */
 
 .toggler-hide-ghost { display: none; }
@@ -14,3 +14,147 @@
 .toggler-link-ext { cursor: pointer; }
 .toggler-icon-hide { display: none; }
 .toggler-icon-show { display: inline-block; }
+.toggler-clearfix:before, .clearfix:after { content: ""; display: table; }
+.toggler-clearfix:after { clear: both; }
+.toggler-clearfix { *zoom: 1; }
+
+
+/*** Themes ***/ 
+
+.toggler-theme-boxed-white {
+	border: 1px solid #fff;
+	box-shadow: 0px 0px 5px #888 inset;
+	padding: 5px;
+	background: rgba(230,230,230,1);
+	margin: 10px 0;
+}
+.toggler-theme-boxed-white .toggler-target > div { 
+	background: #CCC;
+	padding: 5px 10px;
+	margin: 5px -3px -3px;
+}
+.toggler-theme-boxed-white .toggler-link {
+	padding: 0px 5px;
+}
+.toggler-theme-boxed-black {
+	border: 1px solid #000;
+	box-shadow: 0px 0px 5px #444 inset;
+	padding: 5px;
+	background: rgba(30,30,30,1);
+	margin: 10px 0;
+}
+.toggler-theme-boxed-black .toggler-target > div { 
+	background: #333;
+	padding: 5px 10px;
+	margin: 5px -3px -3px;
+}
+.toggler-theme-boxed-black .toggler-link {
+	padding: 0px 5px;
+}
+.toggler-theme-boxed-gray {
+	border: 1px solid #444;
+	box-shadow: 0px 0px 5px #AAA inset;
+	padding: 5px;
+	background: #888;
+	margin: 10px 0;
+}
+.toggler-theme-boxed-gray .toggler-target > div { 
+	background: #666;
+	padding: 5px 10px;
+	margin: 5px -3px -3px;
+}
+.toggler-theme-boxed-gray .toggler-link {
+	padding: 0px 5px;
+}
+.toggler-theme-columns-dark:before, .toggler-theme-columns-dark:after { content: ""; display: table; }
+.toggler-theme-columns-dark:after { clear: both; }
+.toggler-theme-columns-dark { *zoom: 1; }
+.toggler-theme-columns-dark {
+	margin: 5px 0;
+	width: 100%;
+}
+.toggler-theme-columns-dark .toggler-target {
+	float: left;
+	width: 50%;	
+}
+.toggler-theme-columns-dark .toggler-target div {
+	box-sizing: border-box;
+	padding: 5px 10px;
+	background: #555;
+	box-shadow: -3px 3px 5px #222;
+}
+.toggler-theme-columns-dark .toggler-link {
+	float: left;
+	border-right: 2px solid #333;
+	box-sizing: border-box;
+	padding: 5px 10px;
+	display: table-cell;
+	background: #222;
+	width: 50%;
+	position: relative;	
+	box-shadow: -3px 3px 5px black;
+}
+.toggler-theme-columns-dark .toggler-link:active {
+	box-shadow: -1px 1px 3px black;
+	margin-top: 3px;
+	margin-left: -3px;
+}
+.toggler-theme-columns-dark .toggler-link:before {
+	content: ">";
+	position: absolute;
+	border: 0;
+	border-style: solid;
+	border-color: transparent transparent transparent white;
+	right: 10px;
+	box-sizing: border-box;
+	font-family: georgia;
+	text-shadow: 1px 1px black;
+	font-weight: bolder;
+	color: #999;
+}
+.toggler-theme-columns-light:before, .toggler-theme-columns-light:after { content: ""; display: table; }
+.toggler-theme-columns-light:after { clear: both; }
+.toggler-theme-columns-light { *zoom: 1; }
+.toggler-theme-columns-light {
+	margin: 5px 0;
+	width: 100%;
+}
+.toggler-theme-columns-light .toggler-target {
+	float: left;
+	width: 50%;	
+}
+.toggler-theme-columns-light .toggler-target div {
+	box-sizing: border-box;
+	padding: 5px 10px;
+	background: #ddd;
+	box-shadow: -3px 3px 5px #999;
+}
+.toggler-theme-columns-light .toggler-link {
+	float: left;
+	border-right: 2px solid #ccc;
+	box-sizing: border-box;
+	padding: 5px 10px;
+	display: table-cell;
+	background: #eee;
+	width: 50%;
+	position: relative;	
+	box-shadow: -3px 3px 5px #888;
+}
+.toggler-theme-columns-light .toggler-link:active {
+	box-shadow: -1px 1px 3px #888;
+	margin-top: 3px;
+	margin-left: -3px;
+}
+.toggler-theme-columns-light .toggler-link:before {
+	content: ">";
+	position: absolute;
+	border: 0;
+	border-style: solid;
+	border-color: transparent transparent transparent white;
+	right: 10px;
+	box-sizing: border-box;
+	font-family: georgia;
+	text-shadow: 1px 1px black;
+	font-weight: bolder;
+	color: #bbb;
+}
