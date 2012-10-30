@@ -3,7 +3,7 @@
 Plugin Name: Toggler 
 Plugin URI: http://www.omniwp.com/plugins/toggler-a-wordpress-plugin/ 
 Description: Toggler lets you esaily toggle anything you want from withing a Post/Page.
-Version: 2.3
+Version: 2.4
 Author: Nimrod Tsabari / omniWP
 Author URI: http://www.omniwp.com
 */  
@@ -24,7 +24,7 @@ Author URI: http://www.omniwp.com
 */?>
 <?php
 
-define('TOGGLER_VER', '2.3');
+define('TOGGLER_VER', '2.4');
 define('TOGGLER_DIR', plugin_dir_url( __FILE__ ));
 
 /* Toggler : Init */

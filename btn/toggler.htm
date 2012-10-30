@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Add a Toggler Box</title>
+	<title>Add a Toggler</title>
 	<script type="text/javascript" src="js/tiny_mce_popup.js"></script>
 	<script type="text/javascript" src="js/dialog.js"></script>
 	<script type="text/javscript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
@@ -15,6 +15,7 @@
 		font-size: 18px;
 		border-bottom: 0px;
 		color: black;
+		background: white;
 	}
 	p.title span {
 		font-size: 12px;
@@ -64,10 +65,29 @@
 <body>
 <form onsubmit="TogglerDialog.insert();return false;" action="#">
 	<p class="title">Insert a Toggler</p>
-	<p>Toggler Connector 
-		<input id="connector" name="connector" type="text" class="text" size="30" />
-		<span class="desc block">Divide into columns and decide how many to use.</span>	
+	<p>Toggler Theme 
+		<select id="theme" name="theme" onchange="swtichThemeSelect(this.value)">
+			<option value="no-theme" selected="selected">None</option>
+			<option value="boxed-white">Boxed White</option>
+			<option value="boxed-gray">Boxed Gray</option>
+			<option value="boxed-black">Boxed Black</option>
+			<option value="columns-dark">Columns Dark</option>
+			<option value="columns-light">Columns Light</option>
+		</select>
+		<span class="desc inline"> | Choose your Toggler Theme.</span>	
 	</p>
+	<div id="theme-title" class="toggler-admin-hidden">
+		<p>Toggler Title 
+			<input id="title" name="title" type="text" class="text" size="30" />
+			<span class="desc block">The Title of you Theme's Switch.</span>	
+		</p>
+	</div>
+	<div id="toggler-connector" class="toggler-admin-show">
+		<p>Toggler Connector 
+			<input id="connector" name="connector" type="text" class="text" size="30" />
+			<span class="desc block">Divide into columns and decide how many to use.</span>	
+		</p>
+	</div>
 	<p>Inline 
 		<select id="inline" name="inline">
 			<option value="no">No</option>
@@ -159,6 +179,21 @@
 <script type="text/javascript">
 	function d(id) { return document.getElementById(id); }
 
+	function swtichThemeSelect(val) {
+			if (val == 'no-theme') {
+				s = d('toggler-connector');
+				s.className = 'toggler-admin-show';
+				h = d('theme-title');
+				h.className = 'toggler-admin-hidden';
+			} else {
+				s = d('theme-title');
+				s.className = 'toggler-admin-show';
+				h = d('toggler-connector');
+				h.className = 'toggler-admin-hidden';
+			}
+		
+	}
+	
 	function switchSelect(val) {
 			if (val == 'none') {
 				h = d('toggler-icon');

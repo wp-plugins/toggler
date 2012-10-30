@@ -4,7 +4,7 @@ Donate Link: http://omniwp.com/plugins/toggler-a-wordpress-plugin/
 Tags: toggle, toggle content, shortcode, reveal content, hide, show 
 Requires at least: 2.8
 Tested up to: 3.4.1
-Stable tag: 2.3
+Stable tag: 2.4
 License: GPLv2 or later
 
 Very Powerful tool to toggle anything you want from anywhere you want with simple shortcode.
@@ -61,6 +61,9 @@ You can find detailed information with examples in [Toggler](http://omniwp.com/p
 5. Some Icons.
 
 == Changelog ==
+
+= 2.4 =
+* Added Theme Support for TinyMCE Plugin.
 
 = 2.3 =
 * Added Toggler Themes.
